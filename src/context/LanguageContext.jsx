@@ -12,7 +12,6 @@ export const useLanguage = () => {
 
 const translations = {
   ru: {
-    // Navigation
     dashboard: 'Сводка',
     users: 'Пользователи',
     bots: 'Мои Боты',
@@ -25,12 +24,8 @@ const translations = {
     features: 'Возможности',
     pricing: 'Цена',
     contacts: 'Контакты',
-    
-    // Settings tabs
     security: 'Безопасность',
     interface: 'Интерфейс',
-    
-    // Interface settings
     language: 'Язык',
     theme: 'Тема',
     greenTheme: 'Зеленая',
@@ -38,8 +33,6 @@ const translations = {
     whiteTheme: 'Темно-серая',
     russian: 'Русский',
     english: 'English',
-    
-    // Common
     save: 'Сохранить',
     cancel: 'Отмена',
     delete: 'Удалить',
@@ -56,8 +49,6 @@ const translations = {
     refresh: 'Обновить',
     sync: 'Синхронизировать',
     syncing: 'Синхронизация...',
-    
-    // Login
     loginTitle: 'Войдите в панель управления',
     username: 'Логин',
     password: 'Пароль',
@@ -65,8 +56,6 @@ const translations = {
     enterPassword: 'Введите пароль',
     enterLoginPassword: 'Введите логин и пароль',
     invalidCredentials: 'Неверный логин или пароль',
-    
-    // Dashboard
     dashboardTitle: 'Сводка',
     dashboardDescription: 'Обзор активности ваших ботов',
     totalUsers: 'Всего пользователей',
@@ -85,8 +74,6 @@ const translations = {
     messagesChart: 'Сообщения',
     allTime: 'Все время',
     activity: 'Активность',
-    
-    // Users
     usersTitle: 'Пользователи',
     userList: 'Список всех пользователей вашего бота',
     broadcast: 'Рассылка',
@@ -124,8 +111,6 @@ const translations = {
     actions: 'Действия',
     blockedBot: 'Заблокировал бота',
     warning: 'Предупреждение',
-    
-    // Filters
     filters: 'Фильтры',
     allBots: 'Все боты',
     gender: 'Пол',
@@ -141,8 +126,6 @@ const translations = {
     activityDateFrom: 'Дата активности от',
     activityDateTo: 'Дата активности до',
     activeFilters: 'Активные фильтры',
-    
-    // Broadcast
     broadcastMessage: 'Рассылка сообщений',
     selectBots: 'Выберите ботов',
     enterMessage: 'Введите сообщение',
@@ -175,8 +158,6 @@ const translations = {
     selectedBots: 'Выбрано ботов',
     languages: 'Языки',
     confirm: 'Подтвердить',
-    
-    // Bots
     botsTitle: 'Мои Боты',
     myBots: 'Мои Боты',
     noBots: 'У вас пока нет ботов',
@@ -209,8 +190,6 @@ const translations = {
     processedEvents: 'Обработано событий',
     totalUpdates: 'Всего обновлений',
     bot: 'Бот',
-    
-    // User Dialog
     sendMessage: 'Отправить сообщение',
     deleteMessage: 'Удалить сообщение',
     confirmDeleteMessage: 'Подтверждение удаления',
@@ -218,8 +197,6 @@ const translations = {
     noMessages: 'Нет сообщений',
     sendError: 'Ошибка отправки',
     error: 'Ошибка',
-    
-    // Settings
     settings: 'Настройки',
     settingsDescription: 'Управление настройками вашего аккаунта',
     changePassword: 'Смена пароля',
@@ -249,7 +226,6 @@ const translations = {
     accessPeriod: 'Срок доступа (дней)',
   },
   en: {
-    // Navigation
     dashboard: 'Dashboard',
     users: 'Users',
     bots: 'My Bots',
@@ -262,12 +238,8 @@ const translations = {
     features: 'Features',
     pricing: 'Pricing',
     contacts: 'Contacts',
-    
-    // Settings tabs
     security: 'Security',
     interface: 'Interface',
-    
-    // Interface settings
     language: 'Language',
     theme: 'Theme',
     greenTheme: 'Green',
@@ -275,8 +247,6 @@ const translations = {
     whiteTheme: 'Dark Gray',
     russian: 'Русский',
     english: 'English',
-    
-    // Common
     save: 'Save',
     cancel: 'Cancel',
     delete: 'Delete',
@@ -293,8 +263,6 @@ const translations = {
     refresh: 'Refresh',
     sync: 'Sync',
     syncing: 'Syncing...',
-    
-    // Login
     loginTitle: 'Login to control panel',
     username: 'Username',
     password: 'Password',
@@ -302,8 +270,6 @@ const translations = {
     enterPassword: 'Enter password',
     enterLoginPassword: 'Enter username and password',
     invalidCredentials: 'Invalid username or password',
-    
-    // Dashboard
     dashboardTitle: 'Dashboard',
     dashboardDescription: 'Overview of your bots activity',
     totalUsers: 'Total Users',
@@ -322,8 +288,6 @@ const translations = {
     messagesChart: 'Messages',
     allTime: 'All Time',
     activity: 'Activity',
-    
-    // Users
     usersTitle: 'Users',
     userList: 'List of all your bot users',
     broadcast: 'Broadcast',
@@ -361,8 +325,6 @@ const translations = {
     actions: 'Actions',
     blockedBot: 'Blocked Bot',
     warning: 'Warning',
-    
-    // Filters
     filters: 'Filters',
     allBots: 'All Bots',
     gender: 'Gender',
@@ -378,8 +340,6 @@ const translations = {
     activityDateFrom: 'Activity Date From',
     activityDateTo: 'Activity Date To',
     activeFilters: 'Active Filters',
-    
-    // Broadcast
     broadcastMessage: 'Broadcast Message',
     selectBots: 'Select Bots',
     enterMessage: 'Enter message',
@@ -412,8 +372,6 @@ const translations = {
     selectedBots: 'Selected Bots',
     languages: 'Languages',
     confirm: 'Confirm',
-    
-    // Bots
     botsTitle: 'My Bots',
     myBots: 'My Bots',
     noBots: 'You have no bots yet',
@@ -446,8 +404,6 @@ const translations = {
     processedEvents: 'Processed Events',
     totalUpdates: 'Total Updates',
     bot: 'Bot',
-    
-    // User Dialog
     sendMessage: 'Send Message',
     deleteMessage: 'Delete Message',
     confirmDeleteMessage: 'Delete Confirmation',
@@ -455,8 +411,6 @@ const translations = {
     noMessages: 'No messages',
     sendError: 'Send Error',
     error: 'Error',
-    
-    // Settings
     settings: 'Settings',
     settingsDescription: 'Manage your account settings',
     changePassword: 'Change Password',
@@ -489,12 +443,10 @@ const translations = {
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState(() => {
-    // Проверяем, есть ли сохраненный язык
     const saved = localStorage.getItem('botpanel_language')
     if (saved) {
       return saved
     }
-    // Если нет сохраненного языка, используем английский по умолчанию
     return 'en'
   })
 

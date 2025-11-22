@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    // Проверяем, есть ли сохраненная авторизация
     const savedAuth = localStorage.getItem('botpanel_auth')
     if (savedAuth === 'true') {
       setIsAuthenticated(true)
@@ -36,7 +35,6 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const login = (username, password) => {
-    // Получаем сохраненные учетные данные
     const savedUsername = localStorage.getItem('botpanel_username')
     const savedPassword = localStorage.getItem('botpanel_password')
 
@@ -48,7 +46,6 @@ export const AuthProvider = ({ children }) => {
       return true
     }
     
-    // Проверяем дополнительных пользователей
     const admins = JSON.parse(localStorage.getItem('botpanel_admins') || '[]')
     const admin = admins.find(a => a.username === username && a.password === password)
     if (admin) {
@@ -73,7 +70,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const generateCredentials = () => {
-    // Генерируем случайные логин и пароль
     const username = `admin_${Math.random().toString(36).substring(2, 10)}`
     const password = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     

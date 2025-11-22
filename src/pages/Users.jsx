@@ -30,11 +30,10 @@ const Users = () => {
   const [notifications, setNotifications] = useState([])
   const [showBlockCheckWarning, setShowBlockCheckWarning] = useState(null)
   const [dontShowWarning, setDontShowWarning] = useState(localStorage.getItem('botpanel_dont_show_block_warning') === 'true')
-  const [usersKey, setUsersKey] = useState(0) // Для принудительного обновления
+  const [usersKey, setUsersKey] = useState(0)
   const { bots } = useBots()
   const { t } = useLanguage()
 
-  // Добавляем уведомление
   const addNotification = (message, type = 'info') => {
     const id = Date.now()
     setNotifications(prev => [...prev, { id, message, type }])
@@ -60,7 +59,6 @@ const Users = () => {
     localStorage.setItem(`botpanel_users_${user.botId}`, JSON.stringify(updatedUsers))
     setShowBlockConfirm(null)
     
-    // Обновляем состояние без перезагрузки
     const updatedUser = updatedUsers.find(u => u.id === user.id)
     if (updatedUser) {
       addNotification(
@@ -69,7 +67,7 @@ const Users = () => {
           : `${user.first_name || user.username || 'Пользователь'} разблокирован`,
         updatedUser.blocked ? 'warning' : 'success'
       )
-      setUsersKey(prev => prev + 1) // Принудительно обновляем список пользователей
+      setUsersKey(prev => prev + 1)
     }
   }
 
@@ -91,13 +89,11 @@ const Users = () => {
     try {
       const result = await checkUserBlocked(bot.token, user.id)
       if (result.success) {
-        // Удаляем тестовое сообщение после проверки
         if (result.messageId && result.chatId) {
           try {
             await deleteTelegramMessage(bot.token, result.chatId, result.messageId)
           } catch (error) {
             console.error('Error deleting test message:', error)
-            // Не показываем ошибку пользователю, так как проверка уже выполнена
           }
         }
         
@@ -113,8 +109,7 @@ const Users = () => {
           addNotification(`${user.first_name || user.username || 'Пользователь'} не заблокировал бота`, 'success')
         }
         
-        // Обновляем состояние без перезагрузки
-        setUsersKey(prev => prev + 1) // Принудительно обновляем список пользователей
+        setUsersKey(prev => prev + 1)
       } else {
         addNotification(`Ошибка проверки: ${result.error}`, 'error')
       }
@@ -126,8 +121,6 @@ const Users = () => {
     }
   }
 
-
-  // Получаем всех пользователей из всех ботов
   const users = useMemo(() => {
     const allUsers = []
     bots.forEach(bot => {
@@ -143,7 +136,6 @@ const Users = () => {
     return allUsers
   }, [bots, usersKey])
 
-  // Загружаем аватарки пользователей
   useEffect(() => {
     users.forEach(user => {
       if (!userAvatars[user.id] && user.botId) {
@@ -161,13 +153,11 @@ const Users = () => {
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
-      // Поиск
       const name = user.first_name || user.username || ''
       const username = user.username || ''
       const query = searchQuery.toLowerCase()
       const matchesSearch = name.toLowerCase().includes(query) || username.toLowerCase().includes(query)
       
-      // Фильтры
       const matchesBot = !filters.bot || user.botId === filters.bot
       const matchesGender = !filters.gender || user.gender === filters.gender
       const matchesPremium = !filters.premium || (filters.premium === 'yes' ? user.is_premium : !user.is_premium)
@@ -219,7 +209,6 @@ const Users = () => {
           </div>
         </div>
 
-        {/* Search */}
         <div className="mb-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -233,7 +222,6 @@ const Users = () => {
           </div>
         </div>
 
-        {/* Active Filters */}
         {(filters.bot || filters.gender || filters.premium || filters.blocked || filters.dateFrom || filters.dateTo) && (
           <div className="mb-4 flex flex-wrap gap-2 items-center">
             <span className="text-sm text-gray-400">{t('activeFilters')}:</span>
@@ -280,7 +268,6 @@ const Users = () => {
           </div>
         )}
 
-        {/* Users Count */}
         {filteredUsers.length > 0 && (
           <div className="mb-4 text-sm text-gray-400">
             {t('shown')} <span className="font-medium text-gray-300">1</span> - <span className="font-medium text-gray-300">{filteredUsers.length}</span> {t('of')}{' '}
@@ -300,7 +287,6 @@ const Users = () => {
           </div>
         ) : (
           <>
-            {/* Users Table */}
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-md overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -452,7 +438,6 @@ const Users = () => {
           </>
         )}
 
-        {/* User Dialog */}
         {selectedUser && (
           <UserDialog
             user={selectedUser}
@@ -464,7 +449,6 @@ const Users = () => {
           />
         )}
 
-        {/* Filters Modal */}
         <UserFilters
           isOpen={showFilters}
           onClose={() => setShowFilters(false)}
@@ -472,13 +456,11 @@ const Users = () => {
           filters={filters}
         />
 
-        {/* Broadcast Modal */}
         <BroadcastModal
           isOpen={showBroadcast}
           onClose={() => setShowBroadcast(false)}
         />
 
-        {/* Block User Confirmation Modal */}
         {showBlockConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
@@ -512,7 +494,6 @@ const Users = () => {
           </div>
         )}
 
-        {/* Block Check Warning Modal */}
         {showBlockCheckWarning && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
@@ -552,7 +533,6 @@ const Users = () => {
           </div>
         )}
 
-        {/* Notifications */}
         <div className="fixed top-20 right-4 z-50 space-y-2">
           {notifications.map(notification => (
             <div

@@ -86,7 +86,6 @@ export const BotsProvider = ({ children }) => {
     setBots(attachStats(ownerBots))
   }, [attachStats, loadAllBots, persistAllBots, resolvedCurrentUser, mainAdminUsername])
 
-  // Обновляем статистику каждые 30 секунд
   useEffect(() => {
     const interval = setInterval(() => {
       setBots((prevBots) =>
@@ -100,25 +99,18 @@ export const BotsProvider = ({ children }) => {
     return () => clearInterval(interval)
   }, [])
 
-  // Автоматическая синхронизация ботов с Telegram каждые 60 секунд
-  // ВАЖНО: Telegram API имеет лимиты на количество запросов
-  // Синхронизация каждую секунду будет слишком нагружать сервер
-  // 60 секунд - оптимальный баланс между актуальностью данных и нагрузкой
   useEffect(() => {
     if (bots.length === 0) return
 
     const syncInterval = setInterval(async () => {
-      // Синхронизируем только ботов с токенами
       const botsWithTokens = bots.filter(
         bot => bot.token && !isDemoToken(bot.token) && bot.status === 'active'
       )
       
       for (const bot of botsWithTokens) {
         try {
-          // Синхронизируем данные
           await syncBotData(bot.id, bot.token)
           
-          // Обновляем статистику после синхронизации
           setBots(prevBots => 
             prevBots.map(b => 
               b.id === bot.id 

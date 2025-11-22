@@ -20,7 +20,6 @@ const Bots = () => {
   const [verifyError, setVerifyError] = useState('')
   const [botAvatars, setBotAvatars] = useState({})
 
-  // Загружаем аватарки ботов
   useEffect(() => {
     bots.forEach(bot => {
       if (!botAvatars[bot.id] && bot.token && bot.status === 'active') {
@@ -51,7 +50,6 @@ const Bots = () => {
     setBotInfo(null)
     setVerifyError('')
 
-    // Автоматически синхронизируем данные после добавления бота
     if (formData.token) {
       setTimeout(async () => {
         const result = await syncBotData(newBot.id, formData.token)
@@ -162,8 +160,6 @@ const Bots = () => {
           total: result.total || 0,
           botName: bot.name
         })
-        // Обновляем статистику без перезагрузки страницы
-        // Статистика обновится автоматически через BotsContext
       } else {
         setSyncResult({
           success: false,
@@ -343,7 +339,6 @@ const Bots = () => {
           </div>
         )}
 
-        {/* Modal для добавления/редактирования бота */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
@@ -440,7 +435,6 @@ const Bots = () => {
           </div>
         )}
 
-        {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
@@ -467,7 +461,6 @@ const Bots = () => {
           </div>
         )}
 
-        {/* Sync Result Modal */}
         {syncResult && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">

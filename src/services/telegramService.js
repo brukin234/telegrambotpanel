@@ -1,6 +1,3 @@
-// Сервис для работы с Telegram Bot API
-// ВАЖНО: В продакшене токены должны храниться на бэкенде!
-
 const TELEGRAM_API_BASE = 'https://api.telegram.org/bot'
 
 export const isDemoToken = (token) => {
@@ -8,9 +5,6 @@ export const isDemoToken = (token) => {
   return token === 'demo_token'
 }
 
-/**
- * Получить информацию о боте
- */
 export const getBotInfo = async (token) => {
   if (isDemoToken(token)) {
     return {
@@ -41,10 +35,6 @@ export const getBotInfo = async (token) => {
   }
 }
 
-/**
- * Получить количество пользователей бота (через getUpdates)
- * ВАЖНО: Это ограниченный метод, лучше использовать webhook
- */
 export const getBotUpdates = async (token, offset = 0, limit = 100) => {
   try {
     const response = await fetch(
@@ -71,9 +61,6 @@ export const getBotUpdates = async (token, offset = 0, limit = 100) => {
   }
 }
 
-/**
- * Установить webhook для бота
- */
 export const setWebhook = async (token, webhookUrl) => {
   try {
     const response = await fetch(
@@ -100,9 +87,6 @@ export const setWebhook = async (token, webhookUrl) => {
   }
 }
 
-/**
- * Удалить webhook
- */
 export const deleteWebhook = async (token) => {
   try {
     const response = await fetch(`${TELEGRAM_API_BASE}${token}/deleteWebhook`)
@@ -127,9 +111,6 @@ export const deleteWebhook = async (token) => {
   }
 }
 
-/**
- * Получить информацию о webhook
- */
 export const getWebhookInfo = async (token) => {
   try {
     const response = await fetch(`${TELEGRAM_API_BASE}${token}/getWebhookInfo`)
@@ -154,9 +135,6 @@ export const getWebhookInfo = async (token) => {
   }
 }
 
-/**
- * Отправить сообщение пользователю
- */
 export const sendMessage = async (token, chatId, text) => {
   if (isDemoToken(token)) {
     return {
@@ -203,9 +181,6 @@ export const sendMessage = async (token, chatId, text) => {
   }
 }
 
-/**
- * Удалить сообщение (бот может удалять только свои сообщения или сообщения в группах)
- */
 export const deleteTelegramMessage = async (token, chatId, messageId) => {
   try {
     const response = await fetch(
@@ -239,9 +214,6 @@ export const deleteTelegramMessage = async (token, chatId, messageId) => {
   }
 }
 
-/**
- * Получить фото профиля пользователя
- */
 export const getUserProfilePhotos = async (token, userId) => {
   if (isDemoToken(token)) {
     return {
@@ -250,7 +222,6 @@ export const getUserProfilePhotos = async (token, userId) => {
     }
   }
   try {
-    // Проверяем кеш
     const { getCachedAvatar, setCachedAvatar } = await import('./avatarCache')
     const cacheKey = `user_${userId}_${token.substring(0, 10)}`
     const cached = getCachedAvatar(cacheKey)
@@ -269,7 +240,6 @@ export const getUserProfilePhotos = async (token, userId) => {
     
     if (data.ok && data.result.total_count > 0) {
       const fileId = data.result.photos[0][0].file_id
-      // Получаем информацию о файле
       const fileResponse = await fetch(
         `${TELEGRAM_API_BASE}${token}/getFile?file_id=${fileId}`
       )
@@ -277,7 +247,6 @@ export const getUserProfilePhotos = async (token, userId) => {
       
       if (fileData.ok) {
         const photoUrl = `https://api.telegram.org/file/bot${token}/${fileData.result.file_path}`
-        // Сохраняем в кеш
         setCachedAvatar(cacheKey, photoUrl)
         return {
           success: true,
@@ -298,9 +267,6 @@ export const getUserProfilePhotos = async (token, userId) => {
   }
 }
 
-/**
- * Получить фото профиля бота
- */
 export const getBotProfilePhoto = async (token) => {
   if (isDemoToken(token)) {
     return {
@@ -309,7 +275,6 @@ export const getBotProfilePhoto = async (token) => {
     }
   }
   try {
-    // Проверяем кеш
     const { getCachedAvatar, setCachedAvatar } = await import('./avatarCache')
     const cacheKey = `bot_${token.substring(0, 10)}`
     const cached = getCachedAvatar(cacheKey)
@@ -321,13 +286,11 @@ export const getBotProfilePhoto = async (token) => {
       }
     }
     
-    // Получаем информацию о боте
     const botInfo = await getBotInfo(token)
     if (!botInfo.success) {
       return { success: false, error: 'Не удалось получить информацию о боте' }
     }
 
-    // Пытаемся получить фото через getChat
     const response = await fetch(
       `${TELEGRAM_API_BASE}${token}/getChat?chat_id=${botInfo.bot.id}`
     )
@@ -342,7 +305,6 @@ export const getBotProfilePhoto = async (token) => {
       
       if (fileData.ok) {
         const photoUrl = `https://api.telegram.org/file/bot${token}/${fileData.result.file_path}`
-        // Сохраняем в кеш
         setCachedAvatar(cacheKey, photoUrl)
         return {
           success: true,
@@ -363,14 +325,8 @@ export const getBotProfilePhoto = async (token) => {
   }
 }
 
-/**
- * Проверить, заблокировал ли пользователь бота
- * Используем sendMessage с небольшим текстом для проверки
- */
 export const checkUserBlocked = async (token, userId) => {
   try {
-    // Пытаемся отправить тестовое сообщение
-    // Если пользователь заблокировал бота, получим ошибку 403
     const response = await fetch(
       `${TELEGRAM_API_BASE}${token}/sendMessage`,
       {
@@ -380,14 +336,13 @@ export const checkUserBlocked = async (token, userId) => {
         },
         body: JSON.stringify({
           chat_id: userId,
-          text: '.', // Минимальное сообщение для проверки
+          text: '.',
         }),
       }
     )
     const data = await response.json()
     
     if (data.ok) {
-      // Сообщение отправлено - пользователь не заблокировал бота
       return {
         success: true,
         blocked: false,
@@ -395,7 +350,6 @@ export const checkUserBlocked = async (token, userId) => {
         chatId: data.result?.chat?.id || userId
       }
     } else {
-      // Если ошибка 403 - пользователь заблокировал бота
       if (data.error_code === 403) {
         return {
           success: true,
@@ -416,15 +370,11 @@ export const checkUserBlocked = async (token, userId) => {
   }
 }
 
-/**
- * Обработать обновление от Telegram (для webhook)
- */
 export const processTelegramUpdate = (update, botId) => {
   try {
     let event = null
     let user = null
 
-    // Обработка сообщений
     if (update.message) {
       const message = update.message
       const from = message.from
@@ -438,10 +388,8 @@ export const processTelegramUpdate = (update, botId) => {
         is_premium: from.is_premium || false,
       }
 
-      // Определяем тип события
       if (message.text) {
         if (message.text.startsWith('/')) {
-          // Команда
           const command = message.text.split(' ')[0]
           event = {
             userId: from.id,
@@ -454,7 +402,6 @@ export const processTelegramUpdate = (update, botId) => {
             },
           }
         } else {
-          // Обычное сообщение
           event = {
             userId: from.id,
             type: 'message',
@@ -469,7 +416,6 @@ export const processTelegramUpdate = (update, botId) => {
       }
     }
 
-    // Обработка callback query (нажатие на кнопку)
     if (update.callback_query) {
       const callback = update.callback_query
       const from = callback.from
@@ -502,10 +448,6 @@ export const processTelegramUpdate = (update, botId) => {
   }
 }
 
-/**
- * Синхронизировать данные бота с Telegram
- * Получает последние обновления и сохраняет их
- */
 export const syncBotData = async (botId, token) => {
   if (isDemoToken(token)) {
     return {
@@ -516,11 +458,9 @@ export const syncBotData = async (botId, token) => {
     }
   }
   try {
-    // Получаем последний обработанный update_id из localStorage
     const lastUpdateIdKey = `botpanel_last_update_id_${botId}`
     const lastUpdateId = parseInt(localStorage.getItem(lastUpdateIdKey) || '0')
     
-    // Получаем обновления начиная с последнего обработанного
     const updatesResult = await getBotUpdates(token, lastUpdateId, 100)
     
     if (!updatesResult.success) {
@@ -543,16 +483,12 @@ export const syncBotData = async (botId, token) => {
     let processedCount = 0
     let maxUpdateId = lastUpdateId
 
-    // Импортируем функции сохранения
     const { saveEvent, saveUser, getEvents } = await import('./dataService')
 
-    // Получаем существующие события для проверки дубликатов
     const existingEvents = getEvents(botId)
     const existingEventIds = new Set(existingEvents.map(e => e.updateId))
 
-    // Обрабатываем каждое обновление
     for (const update of updates) {
-      // Пропускаем уже обработанные обновления
       if (existingEventIds.has(update.update_id)) {
         maxUpdateId = Math.max(maxUpdateId, update.update_id)
         continue
@@ -565,7 +501,6 @@ export const syncBotData = async (botId, token) => {
       }
       
       if (event) {
-        // Добавляем update_id к событию для предотвращения дубликатов
         const eventWithUpdateId = {
           ...event,
           updateId: update.update_id
@@ -577,7 +512,6 @@ export const syncBotData = async (botId, token) => {
       maxUpdateId = Math.max(maxUpdateId, update.update_id)
     }
 
-    // Сохраняем последний обработанный update_id
     localStorage.setItem(lastUpdateIdKey, maxUpdateId.toString())
 
     return {

@@ -16,14 +16,12 @@ export const ThemeProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    // Применяем тему к документу при загрузке
     const savedTheme = localStorage.getItem('botpanel_theme') || 'green'
     document.documentElement.setAttribute('data-theme', savedTheme)
   }, [])
 
   useEffect(() => {
     localStorage.setItem('botpanel_theme', theme)
-    // Применяем тему к документу
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 

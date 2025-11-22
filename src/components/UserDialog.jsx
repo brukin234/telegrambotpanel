@@ -17,12 +17,10 @@ const UserDialog = ({ user, botId, onClose }) => {
   const { bots } = useBots()
   const { t } = useLanguage()
 
-  // Получаем токен бота
   const bot = bots.find(b => b.id === botId)
   const botToken = bot?.token
   const userId = user?.id
 
-  // Загружаем аватарку пользователя
   useEffect(() => {
     if (userId && botToken) {
       getUserProfilePhotos(botToken, userId).then(result => {
@@ -150,11 +148,9 @@ const UserDialog = ({ user, botId, onClose }) => {
         return
       }
 
-      // Отправляем сообщение через Telegram API
       const result = await sendMessage(botToken, user.id, messageText)
       
       if (result.success) {
-        // Сохраняем отправленное сообщение как событие
         addEvent(botId, {
           userId: user.id,
           type: 'message_sent',
@@ -186,7 +182,6 @@ const UserDialog = ({ user, botId, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
       <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-2xl w-full h-[80vh] flex flex-col animate-scale-in">
-        {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-dark-300">
           <div className="flex items-center space-x-3">
             {userAvatar ? (
@@ -234,7 +229,6 @@ const UserDialog = ({ user, botId, onClose }) => {
           </div>
         </div>
 
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
           {messages.map((message) => (
             <div key={message.id} className={`flex items-start space-x-3 group ${message.from === 'admin' ? 'justify-end' : ''}`}>
@@ -299,7 +293,6 @@ const UserDialog = ({ user, botId, onClose }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Delete Message Confirmation Modal */}
         {showDeleteConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
@@ -342,7 +335,6 @@ const UserDialog = ({ user, botId, onClose }) => {
         )}
 
 
-        {/* Input */}
         <div className="border-t border-dark-300 p-4">
           <form onSubmit={handleSendMessage} className="flex space-x-2">
             <input

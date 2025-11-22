@@ -23,7 +23,6 @@ const Reports = () => {
   const [activeTab, setActiveTab] = useState('actions')
   const { bots } = useBots()
 
-  // Получаем данные из всех ботов
   const actionsData = useMemo(() => {
     const allActions = {}
     bots.forEach(bot => {
@@ -123,7 +122,6 @@ const Reports = () => {
           <p className="text-gray-400">Детальная аналитика по различным метрикам</p>
         </div>
 
-        {/* Tabs */}
         <div className="mb-6 border-b border-dark-300">
           <nav className="flex space-x-8">
             {tabs.map((tab) => {
@@ -146,7 +144,6 @@ const Reports = () => {
           </nav>
         </div>
 
-        {/* Actions Report */}
         {activeTab === 'actions' && (
           <div className="space-y-6">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-md p-6">
@@ -180,7 +177,6 @@ const Reports = () => {
           </div>
         )}
 
-        {/* UTM Report */}
         {activeTab === 'utm' && (
           <div className="space-y-6">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-md p-6">
@@ -235,7 +231,6 @@ const Reports = () => {
           </div>
         )}
 
-        {/* Bounce Report */}
         {activeTab === 'bounce' && (
           <div className="space-y-6">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-md p-6">
@@ -279,7 +274,6 @@ const Reports = () => {
           </div>
         )}
 
-        {/* Sessions Report */}
         {activeTab === 'sessions' && (
           <div className="space-y-6">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-md p-6">

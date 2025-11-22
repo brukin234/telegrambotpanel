@@ -1,13 +1,6 @@
-/**
- * Кеш для аватарок пользователей и ботов
- */
-
 const AVATAR_CACHE_KEY = 'botpanel_avatar_cache'
-const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000 // 7 дней
+const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000
 
-/**
- * Получить кеш аватарок
- */
 const getCache = () => {
   try {
     const cached = localStorage.getItem(AVATAR_CACHE_KEY)
@@ -20,9 +13,6 @@ const getCache = () => {
   return {}
 }
 
-/**
- * Сохранить кеш аватарок
- */
 const saveCache = (cache) => {
   try {
     localStorage.setItem(AVATAR_CACHE_KEY, JSON.stringify(cache))
@@ -31,20 +21,15 @@ const saveCache = (cache) => {
   }
 }
 
-/**
- * Получить аватар из кеша
- */
 export const getCachedAvatar = (key) => {
   const cache = getCache()
   const item = cache[key]
   
   if (item && item.url && item.timestamp) {
-    // Проверяем, не истек ли кеш
     const now = Date.now()
     if (now - item.timestamp < CACHE_EXPIRY) {
       return item.url
     } else {
-      // Удаляем устаревший элемент
       delete cache[key]
       saveCache(cache)
     }
@@ -53,9 +38,6 @@ export const getCachedAvatar = (key) => {
   return null
 }
 
-/**
- * Сохранить аватар в кеш
- */
 export const setCachedAvatar = (key, url) => {
   const cache = getCache()
   cache[key] = {
@@ -65,16 +47,10 @@ export const setCachedAvatar = (key, url) => {
   saveCache(cache)
 }
 
-/**
- * Очистить кеш
- */
 export const clearAvatarCache = () => {
   localStorage.removeItem(AVATAR_CACHE_KEY)
 }
 
-/**
- * Очистить устаревшие записи из кеша
- */
 export const cleanExpiredCache = () => {
   const cache = getCache()
   const now = Date.now()

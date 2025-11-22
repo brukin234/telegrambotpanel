@@ -16,12 +16,10 @@ const Login = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Проверяем, есть ли уже сохраненные учетные данные
     const saved = getCredentials()
     if (saved.username && saved.password) {
       setCredentials(saved)
     } else {
-      // Генерируем новые учетные данные при первом запуске
       const newCredentials = generateCredentials()
       setCredentials(newCredentials)
     }

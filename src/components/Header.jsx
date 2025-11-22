@@ -38,7 +38,6 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {isDashboard ? (
               <>
@@ -100,7 +99,6 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <button
             className="md:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -113,7 +111,6 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-2">
             {isDashboard

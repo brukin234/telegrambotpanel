@@ -1,9 +1,3 @@
-// Сервис для работы с данными ботов
-// Здесь хранится логика обработки и хранения данных
-
-/**
- * Сохранить событие от бота
- */
 export const saveEvent = (botId, event) => {
   try {
     const events = JSON.parse(localStorage.getItem(`botpanel_events_${botId}`) || '[]')
@@ -13,7 +7,6 @@ export const saveEvent = (botId, event) => {
       timestamp: event.timestamp || new Date().toISOString(),
     }
     events.push(eventToSave)
-    // Храним только последние 10000 событий
     const recentEvents = events.slice(-10000)
     localStorage.setItem(`botpanel_events_${botId}`, JSON.stringify(recentEvents))
     return true
@@ -23,16 +16,10 @@ export const saveEvent = (botId, event) => {
   }
 }
 
-/**
- * Добавить событие (алиас для saveEvent)
- */
 export const addEvent = (botId, event) => {
   return saveEvent(botId, event)
 }
 
-/**
- * Удалить событие
- */
 export const deleteEvent = (botId, eventId) => {
   try {
     const events = JSON.parse(localStorage.getItem(`botpanel_events_${botId}`) || '[]')
@@ -45,9 +32,6 @@ export const deleteEvent = (botId, eventId) => {
   }
 }
 
-/**
- * Удалить все события для пользователя
- */
 export const deleteAllEventsForUser = (botId, userId) => {
   try {
     const events = JSON.parse(localStorage.getItem(`botpanel_events_${botId}`) || '[]')
@@ -60,9 +44,6 @@ export const deleteAllEventsForUser = (botId, userId) => {
   }
 }
 
-/**
- * Получить события бота
- */
 export const getEvents = (botId, filters = {}) => {
   try {
     const events = JSON.parse(localStorage.getItem(`botpanel_events_${botId}`) || '[]')
@@ -88,9 +69,6 @@ export const getEvents = (botId, filters = {}) => {
   }
 }
 
-/**
- * Сохранить пользователя
- */
 export const saveUser = (botId, userData) => {
   try {
     const users = JSON.parse(localStorage.getItem(`botpanel_users_${botId}`) || '[]')
@@ -118,9 +96,6 @@ export const saveUser = (botId, userData) => {
   }
 }
 
-/**
- * Получить всех пользователей бота
- */
 export const getUsers = (botId) => {
   try {
     return JSON.parse(localStorage.getItem(`botpanel_users_${botId}`) || '[]')
@@ -130,33 +105,26 @@ export const getUsers = (botId) => {
   }
 }
 
-/**
- * Вычислить статистику бота
- */
 export const calculateBotStats = (botId) => {
   try {
     const events = getEvents(botId)
     const users = getUsers(botId)
     
-    // Уникальные пользователи за сегодня
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const todayEvents = events.filter(e => new Date(e.timestamp) >= today)
     const todayUsers = new Set(todayEvents.map(e => e.userId))
     
-    // Уникальные пользователи за неделю
     const weekAgo = new Date()
     weekAgo.setDate(weekAgo.getDate() - 7)
     const weekEvents = events.filter(e => new Date(e.timestamp) >= weekAgo)
     const weekUsers = new Set(weekEvents.map(e => e.userId))
     
-    // Уникальные пользователи за месяц
     const monthAgo = new Date()
     monthAgo.setMonth(monthAgo.getMonth() - 1)
     const monthEvents = events.filter(e => new Date(e.timestamp) >= monthAgo)
     const monthUsers = new Set(monthEvents.map(e => e.userId))
     
-    // Сессии (группировка событий по пользователям и времени)
     const sessions = calculateSessions(events)
     
     return {
@@ -166,7 +134,7 @@ export const calculateBotStats = (botId) => {
       mau: monthUsers.size,
       totalEvents: events.length,
       totalSessions: sessions.length,
-      revenue: 0, // Можно добавить логику расчета дохода
+      revenue: 0,
     }
   } catch (error) {
     console.error('Error calculating stats:', error)
@@ -182,13 +150,9 @@ export const calculateBotStats = (botId) => {
   }
 }
 
-/**
- * Вычислить сессии из событий
- */
 const calculateSessions = (events) => {
   if (events.length === 0) return []
   
-  // Группируем события по пользователям
   const userEvents = {}
   events.forEach(event => {
     if (!userEvents[event.userId]) {
@@ -197,7 +161,6 @@ const calculateSessions = (events) => {
     userEvents[event.userId].push(event)
   })
   
-  // Для каждого пользователя определяем сессии (разрыв > 30 минут = новая сессия)
   const sessions = []
   const SESSION_TIMEOUT = 30 * 60 * 1000 // 30 минут
   
@@ -236,9 +199,6 @@ const calculateSessions = (events) => {
   return sessions
 }
 
-/**
- * Получить отчет по действиям
- */
 export const getActionsReport = (botId, days = 7) => {
   try {
     const events = getEvents(botId)
@@ -247,7 +207,6 @@ export const getActionsReport = (botId, days = 7) => {
     
     const recentEvents = events.filter(e => new Date(e.timestamp) >= cutoffDate)
     
-    // Группируем по типу действия
     const actions = {}
     const userActions = {}
     
@@ -273,9 +232,6 @@ export const getActionsReport = (botId, days = 7) => {
   }
 }
 
-/**
- * Получить UTM отчет
- */
 export const getUTMReport = (botId) => {
   try {
     const users = getUsers(botId)
@@ -296,7 +252,6 @@ export const getUTMReport = (botId) => {
       }
       
       utmSources[source].users++
-      // Можно добавить логику для подсчета конверсий
     })
     
     return Object.values(utmSources)
@@ -306,15 +261,11 @@ export const getUTMReport = (botId) => {
   }
 }
 
-/**
- * Получить отчет об отказах
- */
 export const getBounceReport = (botId) => {
   try {
     const events = getEvents(botId)
     const users = getUsers(botId)
     
-    // Группируем события по UTM источникам
     const channelStats = {}
     
     users.forEach(user => {
@@ -330,7 +281,6 @@ export const getBounceReport = (botId) => {
       
       channelStats[channel].total++
       
-      // Пользователь считается "отказом", если у него только одно событие /start
       const userEvents = events.filter(e => e.userId === user.id)
       if (userEvents.length === 1 && (userEvents[0].action === '/start' || userEvents[0].type === 'start')) {
         channelStats[channel].bounced++
@@ -347,9 +297,6 @@ export const getBounceReport = (botId) => {
   }
 }
 
-/**
- * Получить отчет о сессиях
- */
 export const getSessionsReport = (botId, days = 7) => {
   try {
     const events = getEvents(botId)
@@ -360,7 +307,6 @@ export const getSessionsReport = (botId, days = 7) => {
     
     const recentSessions = sessions.filter(s => new Date(s.startTime) >= cutoffDate)
     
-    // Группируем по дням недели
     const dayStats = {
       'Пн': { avgDuration: 0, avgActions: 0, count: 0 },
       'Вт': { avgDuration: 0, avgActions: 0, count: 0 },

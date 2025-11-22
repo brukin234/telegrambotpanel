@@ -20,7 +20,6 @@ const Settings = () => {
   const [newAdmin, setNewAdmin] = useState({ username: '', password: '', days: 30, unlimited: false })
   const [isMainAdminUser, setIsMainAdminUser] = useState(false)
 
-  // Проверяем, является ли текущий пользователь главным админом
   useEffect(() => {
     const checkAdmin = () => {
       try {
@@ -34,12 +33,10 @@ const Settings = () => {
       }
     }
     checkAdmin()
-    // Проверяем периодически
     const interval = setInterval(checkAdmin, 2000)
     return () => clearInterval(interval)
   }, [])
 
-  // Загружаем админов из localStorage
   useEffect(() => {
     const saved = localStorage.getItem('botpanel_admins')
     if (saved) {
@@ -331,7 +328,6 @@ const Settings = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-md p-4">
               <nav className="space-y-2">
@@ -361,7 +357,6 @@ const Settings = () => {
             </div>
           </div>
 
-          {/* Content */}
           <div className="lg:col-span-3">
             <div
               key={activeTab}
@@ -373,7 +368,6 @@ const Settings = () => {
         </div>
       </div>
 
-      {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
           <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
@@ -400,7 +394,6 @@ const Settings = () => {
         </div>
       )}
 
-      {/* Add/Edit User Modal */}
       {showAddAdmin && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
           <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">

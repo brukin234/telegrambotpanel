@@ -16,7 +16,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
   const [showConfirm, setShowConfirm] = useState(false)
   const [languageSearch, setLanguageSearch] = useState('')
   const [filters, setFilters] = useState(() => {
-    // Загружаем сохраненные фильтры
     const saved = localStorage.getItem('botpanel_broadcast_filters')
     if (saved) {
       try {
@@ -34,7 +33,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
   const { bots } = useBots()
   const { t } = useLanguage()
 
-  // Получаем все уникальные языки из пользователей
   const getAllLanguages = () => {
     const allLanguages = new Set()
     bots.forEach(bot => {
@@ -48,7 +46,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
     return Array.from(allLanguages).sort()
   }
 
-  // Инициализируем языки - выбираем все по умолчанию при первом открытии
   useEffect(() => {
     if (isOpen) {
       const allLanguages = getAllLanguages()
@@ -58,14 +55,12 @@ const BroadcastModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen])
 
-  // Сохраняем фильтры при изменении
   useEffect(() => {
     localStorage.setItem('botpanel_broadcast_filters', JSON.stringify(filters))
   }, [filters])
 
   if (!isOpen) return null
 
-  // Подсчитываем количество пользователей для рассылки
   const getRecipientsCount = () => {
     let total = 0
     selectedBots.forEach(botId => {
@@ -121,13 +116,11 @@ const BroadcastModal = ({ isOpen, onClose }) => {
     let total = 0
     const errors = []
 
-    // Подсчитываем общее количество пользователей с учетом фильтров
     selectedBots.forEach(botId => {
       const bot = bots.find(b => b.id === botId)
       if (bot) {
         let users = getUsers(botId).filter(u => !u.blocked)
         
-        // Применяем фильтры
         if (filters.premium === 'yes') {
           users = users.filter(u => u.is_premium)
         } else if (filters.premium === 'no') {
@@ -148,14 +141,12 @@ const BroadcastModal = ({ isOpen, onClose }) => {
 
     setProgress({ sent: 0, total, failed: 0, errors: [] })
 
-    // Отправляем сообщения
     for (const botId of selectedBots) {
       const bot = bots.find(b => b.id === botId)
       if (!bot || !bot.token) continue
 
       let users = getUsers(botId).filter(u => !u.blocked)
       
-      // Применяем фильтры
       if (filters.premium === 'yes') {
         users = users.filter(u => u.is_premium)
       } else if (filters.premium === 'no') {
@@ -185,7 +176,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
           }
           setProgress({ sent, total, failed, errors: [...errors] })
           
-          // Небольшая задержка, чтобы не перегрузить API
           await new Promise(resolve => setTimeout(resolve, 100))
         } catch (error) {
           failed++
@@ -325,7 +315,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
                       'tr': 'Türkçe',
                     }
                     
-                    // Фильтруем по поиску
                     let filteredLanguages = allLanguages
                     if (languageSearch) {
                       const searchLower = languageSearch.toLowerCase()
@@ -390,7 +379,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
               {bots.map(bot => {
                 let users = getUsers(bot.id).filter(u => !u.blocked)
                 
-                // Применяем фильтры для подсчета
                 if (filters.premium === 'yes') {
                   users = users.filter(u => u.is_premium)
                 } else if (filters.premium === 'no') {
@@ -504,7 +492,6 @@ const BroadcastModal = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Confirmation Modal */}
         {showConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
             <div className="bg-dark-200 border border-dark-300 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">

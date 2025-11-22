@@ -22,7 +22,6 @@ const Hero = () => {
           </Link>
         </div>
 
-        {/* Features Grid */}
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">

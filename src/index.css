@@ -90,7 +90,6 @@
     animation: page-transition 0.5s ease-out;
   }
 
-  /* Button glow effect */
   .btn-glow {
     transition: all 0.3s ease;
   }
@@ -111,7 +110,6 @@
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
   }
 
-  /* Blue theme styles - override primary colors */
   [data-theme="blue"] .bg-primary-50 { background-color: #eff6ff !important; }
   [data-theme="blue"] .bg-primary-100 { background-color: #dbeafe !important; }
   [data-theme="blue"] .bg-primary-200 { background-color: #bfdbfe !important; }
@@ -190,7 +188,6 @@
     background-color: #2563eb !important;
   }
 
-  /* Blue theme - dark gray-black backgrounds */
   [data-theme="blue"] {
     --dark-50: #0a0a0a;
     --dark-100: #1a1a1a;
@@ -219,7 +216,6 @@
     background-color: #2a2a2a !important;
   }
 
-  /* Better contrast for blue theme elements */
   [data-theme="blue"] .bg-dark-200 {
     background-color: #2a2a2a !important;
     border-color: #3a3a3a !important;
@@ -234,7 +230,6 @@
     border-color: #3a3a3a !important;
   }
 
-  /* Blue theme - fix button colors and hover states */
   [data-theme="blue"] .bg-primary-600 {
     background-color: #2563eb !important;
   }
@@ -259,7 +254,6 @@
     background-color: rgba(29, 78, 216, 0.5) !important;
   }
 
-  /* Better contrast for hover states */
   [data-theme="blue"] .hover\:bg-dark-200:hover {
     background-color: #1e2740 !important;
   }
@@ -276,7 +270,6 @@
     color: #94a3b8 !important;
   }
 
-  /* Dark Gray theme styles */
   [data-theme="white"] {
     --dark-50: #000000;
     --dark-100: #0a0a0a;
@@ -370,7 +363,6 @@
     background-color: rgba(82, 82, 91, 0.5) !important;
   }
 
-  /* Custom select styles */
   select {
     @apply bg-dark-300 border border-dark-400 text-gray-100 rounded-full px-4 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
@@ -403,7 +395,6 @@
     @apply bg-primary-600 text-white;
   }
 
-  /* Custom checkbox styles */
   input[type="checkbox"] {
     @apply w-4 h-4 bg-dark-300 border-dark-400 rounded focus:ring-primary-500;
     appearance: none;
@@ -418,7 +409,6 @@
     @apply border-primary-500;
   }
 
-  /* Custom scrollbar styles */
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
@@ -435,7 +425,6 @@
     @apply bg-primary-500;
   }
 
-  /* Custom date input styles */
   input[type="date"] {
     @apply bg-dark-300 border border-dark-400 text-gray-100 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
     color-scheme: dark;
@@ -452,7 +441,6 @@
     filter: invert(1);
   }
 
-  /* Recharts bar chart hover fix */
   .recharts-bar-rectangle {
     outline: none !important;
   }

@@ -29,30 +29,27 @@ const Dashboard = () => {
   const { t } = useLanguage()
   const { theme } = useTheme()
   
-  // Цвета для графиков в зависимости от темы
   const chartColors = theme === 'blue' ? {
-    primary: '#3b82f6', // blue-500
-    primaryLight: '#60a5fa', // blue-400
-    primaryDark: '#2563eb', // blue-600
-    secondary: '#4ade80', // green-400 (для второго графика)
+    primary: '#3b82f6',
+    primaryLight: '#60a5fa',
+    primaryDark: '#2563eb',
+    secondary: '#4ade80',
   } : theme === 'white' ? {
-    primary: '#6b7280', // gray-500
-    primaryLight: '#9ca3af', // gray-400
-    primaryDark: '#4b5563', // gray-600
-    secondary: '#9ca3af', // gray-400
+    primary: '#6b7280',
+    primaryLight: '#9ca3af',
+    primaryDark: '#4b5563',
+    secondary: '#9ca3af',
   } : {
-    primary: '#22c55e', // green-500
-    primaryLight: '#4ade80', // green-400
-    primaryDark: '#16a34a', // green-600
-    secondary: '#4ade80', // green-400
+    primary: '#22c55e',
+    primaryLight: '#4ade80',
+    primaryDark: '#16a34a',
+    secondary: '#4ade80',
   }
 
-  // Вычисляем общую статистику из всех ботов
   const totalStats = useMemo(() => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     
-    // Определяем период для фильтрации
     let startDate = new Date()
     if (timeRange === '1d') {
       startDate.setDate(startDate.getDate() - 1)
@@ -65,7 +62,6 @@ const Dashboard = () => {
     }
     startDate.setHours(0, 0, 0, 0)
     
-    // Подсчитываем новых пользователей за период
     let newUsersInPeriod = 0
     let totalMessages = 0
     
@@ -78,7 +74,6 @@ const Dashboard = () => {
         return firstSeen.getTime() >= startDate.getTime()
       }).length
       
-      // Подсчитываем сообщения за период
       const events = getEvents(bot.id, { startDate: startDate.toISOString() })
       totalMessages += events.filter(e => e.type === 'message' || (e.data?.text && !e.action?.startsWith('/'))).length
     })
@@ -93,12 +88,10 @@ const Dashboard = () => {
     )
   }, [bots, timeRange])
 
-  // Данные для графиков
   const chartData = useMemo(() => {
     const days = []
     const today = new Date()
     
-    // Определяем количество дней для графика
     let daysCount = 7
     if (timeRange === '1d') {
       daysCount = 1
@@ -110,7 +103,6 @@ const Dashboard = () => {
       daysCount = 90
     }
     
-    // Создаем массив дней
     for (let i = daysCount - 1; i >= 0; i--) {
       const date = new Date(today)
       date.setDate(date.getDate() - i)
@@ -118,7 +110,6 @@ const Dashboard = () => {
       
       const dateStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })
       
-      // Подсчитываем пользователей и сообщения за этот день
       let usersCount = 0
       let messagesCount = 0
       
@@ -205,7 +196,6 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Time Range Selector */}
         <div className="mb-6 flex space-x-2">
           {['1d', '7d', '30d', '90d'].map((range) => (
             <button
@@ -222,7 +212,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon
@@ -249,9 +238,7 @@ const Dashboard = () => {
           })}
         </div>
 
-        {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Новые пользователи */}
           <div className="bg-dark-200 rounded-xl shadow-md p-6 border border-dark-300">
             <h3 className="text-lg font-semibold mb-4 text-gray-100">{t('newUsersChart')}</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -271,7 +258,6 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Сообщения */}
           <div className="bg-dark-200 rounded-xl shadow-md p-6 border border-dark-300">
             <h3 className="text-lg font-semibold mb-4 text-gray-100">{t('messagesChart')}</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -308,7 +294,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Общий график */}
         <div className="bg-dark-200 rounded-xl shadow-md p-6 border border-dark-300">
           <h3 className="text-lg font-semibold mb-4 text-gray-100">{t('activity')}</h3>
           <ResponsiveContainer width="100%" height={300}>
