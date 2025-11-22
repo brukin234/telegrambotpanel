@@ -36,3 +36,13 @@ backups/
 # OS
 Thumbs.db
 
+# Bot data and sensitive information
+*.db
+*.sqlite
+*.sqlite3
+data/
+bots/
+*.data.json
+botpanel_*.json
+localStorage_backup.*
+
