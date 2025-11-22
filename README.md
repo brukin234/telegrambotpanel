@@ -17,8 +17,8 @@ npm run dev
 
 1. Clone the repository on your VPS:
 ```bash
-git clone <your-repo-url> botpanel
-cd botpanel
+https://github.com/brukin234/telegrambotpanel
+cd telegrambotpanel
 ```
 
 2. Make the deployment script executable and run it:
